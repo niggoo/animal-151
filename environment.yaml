@@ -1,0 +1,11 @@
+name: animal-151
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - cudatoolkit=11.3
+  - torchaudio
+  - torchvision
+  - pytorch
+  - scikit-learn
+  - tensorboard
