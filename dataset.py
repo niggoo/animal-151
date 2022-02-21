@@ -30,13 +30,13 @@ def get_data_loaders(data_dir: str, batch_size: int):
     ])
 
     data = datasets.ImageFolder(data_dir)
-    num_data_samples = len(data.targets)
-    train_idx, test_idx = train_test_split(np.arange(num_data_samples),
+    data_indices = np.arange(len(data.targets))
+    train_idx, test_idx = train_test_split(data_indices,
                                            test_size=0.3,
                                            stratify=data.targets)
 
-    num_test_data_samples = len(test_idx)
-    test_idx, val_idx = train_test_split(np.arange(num_test_data_samples),
+    test_indices = data_indices[test_idx]
+    test_idx, val_idx = train_test_split(test_indices,
                                          test_size=0.5,
                                          stratify=np.array(data.targets)[test_idx])
 
@@ -44,6 +44,8 @@ def get_data_loaders(data_dir: str, batch_size: int):
 
     validation_data = Subset(datasets.ImageFolder(data_dir, transform=test_validation_transform), val_idx)
     test_data = Subset(datasets.ImageFolder(data_dir, transform=test_validation_transform), test_idx)
+
+
 
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=4)
     validation_loader = DataLoader(validation_data, batch_size=batch_size, shuffle=True, num_workers=4)
